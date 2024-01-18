@@ -1,6 +1,10 @@
 from vpython import *
-# Desenho do plano 
-plano = box(pos=vector(0, -0.5, 0), size=vector(10, 0.1, 10), color=color.white)
+scene = canvas(title="Simulação de Colisão Elástica", width=800, height=600)
+scene.camera.pos = vector(0,4.,0)
+scene.camera.axis= vector(0, -2.5,0)
+scene.camera.up = vector(0,0,-1)
+# Desenho do plano
+plano = box(pos=vector(1, -0.5, 1), size=vector(10, 0.1, 10), color=color.red)
 
 # A função sphere desenha as esferas (bolinhas). Só precisa passa a posição e o raio
 bola1 = sphere(pos=vector(-1, 0, 0), radius=0.5, color=color.blue, mass=10)
@@ -17,12 +21,10 @@ def colisao_bolas_planos(bola1, bola2, plano):
     if (bola2.pos.x < -plano.size.x / 2 + bola2.radius) or (bola2.pos.x > plano.size.x / 2 - bola2.radius):
         bola2.velocity *= -1
 
-# Função para colisão entre as bolas
+# Função para colisão elática.
 def colisao_elastica(bola1, bola2):
     velocidade1 = (bola1.velocity.x * (bola1.mass - bola2.mass) + 2 * bola2.velocity.x * bola2.mass) / (bola1.mass + bola2.mass)
     velocidade2 = (bola2.velocity.x * (bola2.mass - bola1.mass) + 2 * bola1.velocity.x * bola1.mass) / (bola1.mass + bola2.mass)
-    #    bola1.velocity *= -1
-    #    bola2.velocity *= -1
     return velocidade1, velocidade2
 
 # Aqui no loop  while é que a magia acontece (Animação)
